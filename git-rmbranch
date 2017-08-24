@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# hikisuu check
+if [ -n "$1" ]; then 
+  branchName=$1;
+else 
+  cat << EOS
+
+How to use
+1. Searching branch
+----------------------------
+$ git rmbranch << branchName >>
+----------------------------
+2. confirm
+3. yes or no
+EOS
+  exit 1;
+fi
+
+
+git branch | grep -i $branchName
+list=`git branch | grep -i $branchName`
+if [ ! "$list" ]; then echo "nothing"; exit 1; fi
+if [ $? -gt 0 ]; then exit 1; fi
+echo "これらを削除してもよろしいですか？ [Y/n]"
+read ANSWER
+
+case $ANSWER in
+    "" | "Y" | "y" | "yes" | "Yes" | "YES" )  git branch | grep -i $branchName | xargs git branch -D ;git branch;;
+        * ) echo "NO!!";;
+esac
+
+
