@@ -18,15 +18,15 @@ EOS
 fi
 
 
-git branch | grep -i $branchName
-list=`git branch | grep -i $branchName`
-if [ ! "$list" ]; then echo "nothing"; exit 1; fi
+git branch | grep -i $branchName | grep -v '*'
+list=`git branch | grep -i $branchName |  grep -v '*' `
+if [ ! "$list" ]; then echo "Nothing!"; exit 1; fi
 if [ $? -gt 0 ]; then exit 1; fi
 echo "これらを削除してもよろしいですか？ [Y/n]"
 read ANSWER
 
 case $ANSWER in
-    "" | "Y" | "y" | "yes" | "Yes" | "YES" )  git branch | grep -i $branchName | xargs git branch -D ;git branch;;
+    "" | "Y" | "y" | "yes" | "Yes" | "YES" )  git branch | grep -i $branchName | grep -v '*' |  xargs git branch -D ;git branch;;
         * ) echo "NO!!";;
 esac
 
